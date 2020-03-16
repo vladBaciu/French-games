@@ -166,18 +166,36 @@
     <script src="js/plugins/plugins.js"></script>
     <!-- Active js -->
     <script src="js/active.js"></script>
-   <!-- FlipCard js -->
-   <script src="js/flipCards.js"></script>
+   
+   <script src="https://script.sheetsu.com/"></script>
 
 
 <script>
-function myFunction() {
-    
-    document.getElementById("Verb").innerHTML = Math.random();;d
-    document.getElementById("Substantiv").innerHTML = "New text!";
-    document.getElementById("Persoana").innerHTML = "New text!";
+    // In this example data is saved to the window.users variable
+    // So it's available for use anywhere in the app/page
+    var verbs = {};
+    function successFunc(data) {
+      verbs = data;
+      console.log(verbs[0].Nivel);
         
- }
+    }
+
+    function errorFunc(e) {
+      console.log(e);
+    }
+
+    function myFunction()
+    {
+      document.getElementById("Verb").innerHTML =verbs[0].VerbeGrupa1;
+      document.getElementById("Substantiv").innerHTML = "New text!";
+      document.getElementById("Persoana").innerHTML = "New text!"; 
+    }
+    // Use Sheetsu.read to get data from a spreadsheet.
+    // Pass callback function, which takes one argument - data
+    // It's triggered after getting data from API
+    Sheetsu.read("https://sheetsu.com/apis/v1.0su/ea01cb78fcaf", {}).then(successFunc, errorFunc);
+    
+  </script>
 
  
 

@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
+
+<script src="https://script.sheetsu.com/"></script>
 <style>
 table {
   font-family: arial, sans-serif;
@@ -61,5 +63,25 @@ tr:nth-child(even) {
   </tr>
 </table>
 
+</div>
+<!--script type="text/javascript" src="verbe.json"></script> -->
+<!--<script type="text/javascript" src="js/parse-json.js"></script> -->
+ <script>
+    // In this example data is saved to the window.users variable
+    // So it's available for use anywhere in the app/page
+    function successFunc(data) {
+      console.log(data);
+    }
+
+    function errorFunc(e) {
+      console.log(e);
+    }
+
+    // Use Sheetsu.read to get data from a spreadsheet.
+    // Pass callback function, which takes one argument - data
+    // It's triggered after getting data from API
+    Sheetsu.read("https://sheetsu.com/apis/v1.0su/ea01cb78fcaf", {}).then(successFunc, errorFunc);
+
+  </script>
 </body>
 </html>
