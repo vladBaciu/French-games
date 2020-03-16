@@ -16,8 +16,10 @@
         margin: 4px 2px;
         cursor: pointer;
         }
-
-
+        .nivel {
+            margin: 50px;
+        }
+      
     </style>
 
 
@@ -52,10 +54,20 @@
             <!-- Contact Info -->
             <div class="contact-info">
                 <a href="#"> @ MaraIosif</a>
-                <a href="https://maraiosif.netlify.com/french_verbs_game_table.html">Go to game table</a>
             </div>
             <!-- Follow Us -->
-        
+            
+            <div class ="nivel" style="float:right">
+                
+                <select id="niveluri" onchange="getLevel()" >
+                    <option value="A1">A1</option>
+                    <option value="A2">A2</option>
+                    <option value="B1">B1</option>
+                    <option value="B2">B2</option>
+                    <option value="C1">C1</option>
+                    <option value="C2">C2</option>
+                  </select>
+                </div>
         </div>
 
 
@@ -70,7 +82,7 @@
                     <!-- Info Content -->
                     <div class="hero-content text-left">
                         <div class="about-games mb-10">
-                            <h4>About this games</h4>
+                            <h4>About this game</h4>
                             <p>Sed elementum lacus a risus luctus suscipit. Aenean sollicitudin sapien neque, in fermentum lorem dignissim a. Nullam eu mattis quam. Donec porttitor nunc a diam molestie blandit. Maecenas quis ultrices ex. Interdum et malesuada fames ac ante ipsum primis in faucibus. Nullam eget vehicula lorem, vitae porta nisi. Ut vel quam erat. Ut vitae erat tincidunt, tristique mi ac, pharetra dolor. In et suscipit ex. Pellentesque aliquet velit tortor, eget placerat mi scelerisque a. Aliquam eu dui efficitur purus posuere viverra. Proin ut elit mollis, euismod diam et, fermentum enim.</p>
                         </div>
                     </div>
@@ -105,7 +117,7 @@
                         <div class="icon">
                             <img src="img/core-img/docs.png" alt="">
                         </div>
-                        <h2 id ="Verb"><span class="counter">100</span>%</h2>
+                        <h2 style="font-size:25px" id ="Verb"><span class="counter">100</span>%</h2>
                         <h5>Le verbe</h5>
                     </div>
                 </div>
@@ -116,7 +128,7 @@
                         <div class="icon">
                             <img src="img/core-img/star.png" alt="">
                         </div>
-                        <h2 id = "Persoana"><span class="counter">100</span>%</h2>
+                        <h2 style="font-size:25px" id = "Persoana"><span class="counter">100</span>%</h2>
                         <h5>La personne</h5>
                     </div>
                 </div>
@@ -127,7 +139,7 @@
                         <div class="icon">
                             <img src="img/core-img/events.png" alt="">
                         </div>
-                        <h2 id="Substantiv"><span class="counter">100</span>%</h2>
+                        <h2 style="font-size:25px" id="Timp"><span class="counter">100</span>%</h2>
                         <h5>Le temps</h5>
                         
                     </div>
@@ -174,9 +186,43 @@
     // In this example data is saved to the window.users variable
     // So it's available for use anywhere in the app/page
     var verbs = {};
+    var persoane = ["Je", "Tu", "Il", "Elle", "Ont", "Nous", "Vous", "Ils", "Elles"];
+    var timpuri = [ "Le présent", "Le passé composé", "L’imparfait", 
+                    "Le passé récent" , "Le passé simple",
+                    "Le plus-que-parfait", "Le passé antérieur", "Le futur proche",
+                    "Le futur simple", "Le futur antérieur" ];
+    var timpuri_check = [];
+    var timpuri_valide = [];
+    var nivel;
+    var nivel_value = "A1";
+    var verbe_nivel = [];
+    var global_valid_index = 0;
+    function getLevel()
+    {
+        verbe_nivel = [];
+        var valid_index_verb =0;
+          nivel =  document.getElementById("niveluri");
+          nivel_value = nivel.options[nivel.selectedIndex].value;
+          
+          for (index in verbs){ 
+
+                if(verbs[index].Nivel == nivel_value)
+                {
+                    verbe_nivel[valid_index_verb] = verbs[index].VerbeGrupa1
+                    valid_index_verb++;
+                }
+                else
+                {
+
+                }
+          }
+          console.log(verbe_nivel);
+          global_valid_index = valid_index_verb;
+    }
+
     function successFunc(data) {
       verbs = data;
-      console.log(verbs[0].Nivel);
+      console.log(data);
         
     }
 
@@ -186,9 +232,55 @@
 
     function myFunction()
     {
-      document.getElementById("Verb").innerHTML =verbs[0].VerbeGrupa1;
-      document.getElementById("Substantiv").innerHTML = "New text!";
-      document.getElementById("Persoana").innerHTML = "New text!"; 
+        var count = 0;
+        var index =0;
+        var valid_index_timp =0;
+        var valid_index_verb =0;
+        for(x in verbs){
+        count++;
+        }
+
+        for (index in verbs){ 
+
+            if(verbs[index].Check == "TRUE")
+            {
+                    timpuri_check[index] = true;
+                    timpuri_valide[valid_index_timp] = verbs[index].TimpuriDisponibile;
+                    valid_index_timp++;
+            }
+            else
+            {
+                    timpuri_check[index] = false;
+            }
+            
+
+            if(verbs[index].Nivel == nivel_value)
+            {
+                verbe_nivel[valid_index_verb] = verbs[index].VerbeGrupa1
+                valid_index_verb++;
+            }
+            else
+            {
+
+            }
+
+           
+        }
+     global_valid_index = valid_index_verb;  
+         
+      if (verbe_nivel.length == 0)
+      {
+        document.getElementById("Verb").innerHTML = "Server Info Indisponible";
+        document.getElementById("Timp").innerHTML = "Server Info Indisponible";
+       document.getElementById("Persoana").innerHTML = "Server Info Indisponible";
+      }
+      else
+      { 
+           document.getElementById("Verb").innerHTML =verbe_nivel[Math.floor((Math.random() * global_valid_index))];
+           document.getElementById("Timp").innerHTML = timpuri_valide[Math.floor((Math.random() * timpuri_valide.length))];
+           document.getElementById("Persoana").innerHTML = persoane[Math.floor((Math.random() * persoane.length))];
+      }
+      
     }
     // Use Sheetsu.read to get data from a spreadsheet.
     // Pass callback function, which takes one argument - data
